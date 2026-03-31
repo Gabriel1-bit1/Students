@@ -7,7 +7,7 @@ public class Student {
     public String prenume;
     public String nume;
     public String formatiedestudiu;
-    private double nota; // Am adaugat campul nota
+    private double nota;
 
     public Student(int numarMatricol, String prenume, String nume, String formatiedestudiu) {
         this.numarMatricol = numarMatricol;
@@ -18,6 +18,11 @@ public class Student {
 
     public void setNota(double nota) {
         this.nota = nota;
+    }
+
+    // --- METODA NOUA ADAUGATA --- (Necesar pentru a extrage nota in gasesteNota)
+    public double getNota() {
+        return nota;
     }
 
     public int getNumarMatricol() {
