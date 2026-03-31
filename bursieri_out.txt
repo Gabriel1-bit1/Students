@@ -1,0 +1,4 @@
+  1025 |          Andrei Popa |   ISM141/2 | Nota:  8.70 | Bursa:  725.50
+  1024 |        Ioan Mihalcea |   ISM141/1 | Nota:  9.80 | Bursa:  801.10
+  1026 |      Anamaria Prodan |    TI131/1 | Nota:  8.90 | Bursa:  745.50
+  1029 |       Bianca Popescu |    TI131/1 | Nota:  9.10 | Bursa:  780.80
