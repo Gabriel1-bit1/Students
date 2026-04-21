@@ -96,8 +96,6 @@ public class Application {
 
                 Student s = studentiMap.get(matricol);
                 if (s != null) {
-                    // ATENTIE AICI: Deoarece Student e imutabil, nu mai putem face s.setNota().
-                    // Trebuie sa cream un student nou cu nota actualizata si sa il punem inapoi in Map.
                     Student studentActualizat = s.actualizeazaNota(nota);
                     studentiMap.put(matricol, studentActualizat);
                 }
