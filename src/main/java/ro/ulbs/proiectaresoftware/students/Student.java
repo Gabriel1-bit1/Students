@@ -3,24 +3,40 @@ package ro.ulbs.proiectaresoftware.students;
 import java.util.Objects;
 
 public class Student {
-    public int numarMatricol;
-    public String prenume;
-    public String nume;
-    public String formatiedestudiu;
-    private double nota;
+    // Toate atributele sunt private final pentru imutabilitate
+    private final int numarMatricol;
+    private final String prenume;
+    private final String nume;
+    private final String formatiedestudiu;
+    private final double nota;
 
+    // Constructorul inițial (fără notă, setează nota implicită la 0.0)
     public Student(int numarMatricol, String prenume, String nume, String formatiedestudiu) {
+        this(numarMatricol, prenume, nume, formatiedestudiu, 0.0);
+    }
+
+    // Constructor complet utilizat pentru a crea noi instanțe (necesar pentru imutabilitate)
+    public Student(int numarMatricol, String prenume, String nume, String formatiedestudiu, double nota) {
         this.numarMatricol = numarMatricol;
         this.prenume = prenume;
         this.nume = nume;
         this.formatiedestudiu = formatiedestudiu;
-    }
-
-    public void setNota(double nota) {
         this.nota = nota;
     }
 
-    // --- METODA NOUA ADAUGATA --- (Necesar pentru a extrage nota in gasesteNota)
+    // --- METODE PENTRU SIMULAREA MODIFICĂRILOR (Returnează instanțe noi) ---
+
+    // Metoda pentru actualizarea notei (înlocuiește vechiul setNota)
+    public Student actualizeazaNota(double notaNoua) {
+        return new Student(this.numarMatricol, this.prenume, this.nume, this.formatiedestudiu, notaNoua);
+    }
+
+    // 7.6.3 b) Funcția care mută un student într-o nouă formație
+    public Student mutaInFormatie(String formatieNoua) {
+        return new Student(this.numarMatricol, this.prenume, this.nume, formatieNoua, this.nota);
+    }
+
+    // --- GETTERI ---
     public double getNota() {
         return nota;
     }
@@ -41,7 +57,6 @@ public class Student {
         return formatiedestudiu;
     }
 
-    // equals si hashCode folosesc doar numarMatricol pentru comparatie
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,7 +70,6 @@ public class Student {
         return Objects.hash(numarMatricol);
     }
 
-    // toString actualizat pentru a include si nota
     @Override
     public String toString() {
         return String.format("%6d | %20s | %10s | Nota: %5.2f", numarMatricol, prenume + " " + nume, formatiedestudiu, nota);
