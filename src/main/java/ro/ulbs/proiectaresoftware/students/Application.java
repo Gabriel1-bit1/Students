@@ -1,7 +1,9 @@
 package ro.ulbs.proiectaresoftware.students;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+// IMPORTURI NOI PENTRU APACHE POI (.xls)
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
 
 public class Application {
 
@@ -56,6 +63,75 @@ public class Application {
             listaModificata.add(s.mutaInFormatie(formatieNoua));
         }
         return listaModificata;
+    }
+
+    // --- METODA NOUA PENTRU 8.5.4 a) - EXPORT EXCEL ---
+    public static void exportaInExcel(String numeFisier, List<Student> studenti) {
+        // Folosim HSSFWorkbook pentru extensia .xls
+        try (HSSFWorkbook workbook = new HSSFWorkbook()) {
+            HSSFSheet sheet = workbook.createSheet("Studenti");
+
+            // Creăm capul de tabel (Header)
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Matricol");
+            headerRow.createCell(1).setCellValue("Prenume");
+            headerRow.createCell(2).setCellValue("Nume");
+            headerRow.createCell(3).setCellValue("Formatie");
+
+            // Populăm fișierul cu studenți
+            int rowNum = 1;
+            for (Student s : studenti) {
+                Row row = sheet.createRow(rowNum++);
+                // Presupunem că ai metoda getMatricol() în clasa Student
+                // (Dacă se numește altfel, te rog să ajustezi aici)
+                row.createCell(0).setCellValue(s.getNumarMatricol());
+                row.createCell(1).setCellValue(s.getPrenume());
+                row.createCell(2).setCellValue(s.getNume());
+                row.createCell(3).setCellValue(s.getFormatiedestudiu());
+            }
+
+            // Scriem în fișier
+            try (FileOutputStream outputStream = new FileOutputStream(numeFisier)) {
+                workbook.write(outputStream);
+            }
+            System.out.println("Export Excel reusit in: " + numeFisier);
+
+        } catch (IOException e) {
+            System.out.println("Eroare la exportul in Excel: " + e.getMessage());
+        }
+    }
+
+    // --- METODA NOUA PENTRU 8.5.4 b) - IMPORT EXCEL ---
+    public static List<Student> citesteDinExcel(String numeFisier) {
+        List<Student> studentiCititi = new ArrayList<>();
+
+        try (FileInputStream inputStream = new FileInputStream(new File(numeFisier));
+             HSSFWorkbook workbook = new HSSFWorkbook(inputStream)) {
+
+            HSSFSheet sheet = workbook.getSheetAt(0);
+
+            // Iterăm prin rânduri (sărim peste rândul 0, care este capul de tabel)
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    // Extragem valorile din celule
+                    int matricol = (int) row.getCell(0).getNumericCellValue();
+                    String prenume = row.getCell(1).getStringCellValue();
+                    String nume = row.getCell(2).getStringCellValue();
+                    String formatie = row.getCell(3).getStringCellValue();
+
+                    // Creăm un nou obiect Student și îl adăugăm în listă
+                    Student s = new Student(matricol, prenume, nume, formatie);
+                    studentiCititi.add(s);
+                }
+            }
+            System.out.println("Import Excel reusit din: " + numeFisier);
+
+        } catch (IOException e) {
+            System.out.println("Eroare la citirea din Excel: " + e.getMessage());
+        }
+
+        return studentiCititi;
     }
 
     public static void main(String[] args) {
@@ -167,13 +243,26 @@ public class Application {
         System.out.println("notaM (Bianca Popescu) = " + notaM);
         System.out.println("notaN (Ioan Popa) = " + notaN);
 
-        // --- TEMA CURENTA: 7.6.3 ---
         System.out.println("\n--- Sectiune 7.6.3 (Impartire in 2 formatii de studiu) ---");
 
         List<Student> studentiImpartiti = imparteInDouaFormatii(listaStudentiNou);
 
         System.out.println("Lista NOUA dupa mutarea studentilor in noile formatii (Formatiile vechi au ramas nemodificate):");
         for (Student s : studentiImpartiti) {
+            System.out.println(s);
+        }
+
+        // --- TEMA CURENTA: 8.5.4 ---
+        System.out.println("\n--- Sectiune 8.5.4 a) Export Lista Studenti in Excel ---");
+        // Apelam metoda de export pe lista de studenti pe care tocmai am folosit-o la punctul anterior
+        String numeFisierExcel = "laborator8_students.xls";
+        exportaInExcel(numeFisierExcel, listaStudentiNou);
+
+        System.out.println("\n--- Sectiune 8.5.4 b) Import Colectie Studenti din Excel ---");
+        // Citim inapoi in alta colectie si afisam sa validam
+        List<Student> listaCititaDinExcel = citesteDinExcel(numeFisierExcel);
+        System.out.println("Afisare studenti cititi din fisierul .xls:");
+        for (Student s : listaCititaDinExcel) {
             System.out.println(s);
         }
     }
