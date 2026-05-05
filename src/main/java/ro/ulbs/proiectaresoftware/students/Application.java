@@ -8,12 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 // IMPORTURI NOI PENTRU APACHE POI (.xls)
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -265,5 +267,53 @@ public class Application {
         for (Student s : listaCititaDinExcel) {
             System.out.println(s);
         }
+
+        //  ADAUGARI NOI: LABORATOR 9 - PROBLEMA 9.3.3
+
+        System.out.println("\n Sectiune 9.3.3 ");
+
+        List<Student> studentiCuNote = Arrays.asList(
+                new Student(1025, "Andrei", "Popa", "ISM141/2", 8.70),
+                new Student(1024, "Ioan", "Mihalcea", "ISM141/1", 10.0),
+                new Student(1026, "Anamaria", "Prodan", "TI131/1", 8.90),
+                new Student(1029, "Bianca", "Popescu", "TI131/1", 10.0),
+                new Student(1029, "Maria", "Pana", "TI131/2", 4.10),
+                new Student(1029, "Gabriela", "Mohanu", "TI131/2", 7.33),
+                new Student(1029, "Marius", "Nasta", "TI131/2", 3.20),
+                new Student(1029, "Marius", "Nasta", "TI131/1", 5.12),
+                new Student(1029, "Andrei", "Dobrescu", "TI131/2", 2.22)
+        );
+
+        // a) Afisati studentii cu nota 10 (filter).
+        System.out.println("\na) Studenti cu nota 10:");
+        studentiCuNote.stream()
+                .filter(s -> s.getNota() == 10.0)
+                .forEach(System.out::println);
+
+        // b) Afisati studentii cu nota sub 5 (filter).
+        System.out.println("\nb) Studenti cu nota sub 5:");
+        studentiCuNote.stream()
+                .filter(s -> s.getNota() < 5.0)
+                .forEach(System.out::println);
+
+        // c) Transformati lista de studenti in care studentii cu nota < 4 devin studenti cu nota 4 (map).
+        System.out.println("\nc) Lista transformata (studentii cu nota < 4 devin cu nota 4):");
+        List<Student> studentiTransformati = studentiCuNote.stream()
+                .map(s -> s.getNota() < 4.0 ? s.actualizeazaNota(4.0) : s)
+                .collect(Collectors.toList());
+
+        studentiTransformati.forEach(System.out::println);
+
+        // d) Calculati suma notelor tuturor studentilor (reduce).
+        System.out.println("\nd) Suma notelor tuturor studentilor:");
+        double sumaNote = studentiCuNote.stream()
+                .map(Student::getNota)
+                .reduce(0.0, (acumulator, nota) -> acumulator + nota); // aplicam reduce-ul clasic
+        System.out.println(String.format("%.2f", sumaNote));
+
+        // e) Calculati media (reduce la suma + impartire la list.size).
+        System.out.println("\ne) Media notelor studentilor din lista:");
+        double media = sumaNote / studentiCuNote.size();
+        System.out.println(String.format("%.2f", media));
     }
 }
