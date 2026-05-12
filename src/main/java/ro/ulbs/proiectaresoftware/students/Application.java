@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-// IMPORTURI NOI PENTRU APACHE POI (.xls)
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -316,4 +315,5 @@ public class Application {
         double media = sumaNote / studentiCuNote.size();
         System.out.println(String.format("%.2f", media));
     }
+
 }

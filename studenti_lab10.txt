@@ -1,0 +1,9 @@
+  1025 |          Andrei Popa |   ISM141/2 | Nota:  8.70
+  1024 |        Ioan Mihalcea |   ISM141/1 | Nota: 10.00
+  1026 |      Anamaria Prodan |    TI131/1 | Nota:  8.90
+  1029 |       Bianca Popescu |    TI131/1 | Nota: 10.00
+  1029 |           Maria Pana |    TI131/1 | Nota:  4.10
+  1029 |      Gabriela Mohanu |    TI131/2 | Nota:  7.33
+  1029 |         Marius Nasta |    TI131/2 | Nota:  3.20
+  1029 |         Marius Nasta |    TI131/1 | Nota:  5.12
+  1029 |      Andrei Dobrescu |    TI131/2 | Nota:  2.22
