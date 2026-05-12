@@ -18,7 +18,7 @@ interface IStudentiImport {
     List<Student> doImport();
 }
 
-// --- CONTEXTUL --- [cite: 49, 114]
+// --- CONTEXTUL ---
 class Exporter {
     // Metodă care rulează strategia de export
     void startExport(IStudentiExport strategyInstance, List<Student> students) {
@@ -64,7 +64,7 @@ class StudentiInFisierXlsx implements IStudentiExport {
     }
 }
 
-// d) Strategy pentru CITIRE din fișier TXT [cite: 98]
+// d) Strategy pentru CITIRE din fișier TXT
 class StudentiDinFisierText implements IStudentiImport {
     private String fileName;
     public StudentiDinFisierText(String fileName) { this.fileName = fileName; }
