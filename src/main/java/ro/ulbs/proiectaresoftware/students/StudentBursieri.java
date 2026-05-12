@@ -30,4 +30,8 @@ public class StudentBursieri extends Student {
     public String toString() {
         return super.toString() + String.format(" | Bursa: %7.2f", cuantumBursa);
     }
+
+    public double getCuantumBursa() {
+        return cuantumBursa;
+    }
 }
