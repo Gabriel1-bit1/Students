@@ -253,11 +253,18 @@ public class Application {
             System.out.println(s);
         }
 
-        // --- TEMA CURENTA: 8.5.4 ---
-        System.out.println("\n--- Sectiune 8.5.4 a) Export Lista Studenti in Excel ---");
-        // Apelam metoda de export pe lista de studenti pe care tocmai am folosit-o la punctul anterior
+        // --- TEMA CURENTA: 8.5.4 (Actualizată cu Decorator pentru problema 11.3.2) ---
+        System.out.println("\n--- Sectiune 8.5.4 a) Export Lista Studenti in Excel (cu Decorator pt Timp) ---");
         String numeFisierExcel = "laborator8_students.xls";
-        exportaInExcel(numeFisierExcel, listaStudentiNou);
+
+        // 1. Creăm componenta de bază care face exportul efectiv
+        StudentExporter baseExporter = new ExcelStudentExporter();
+
+        // 2. Împachetăm (decorăm) componenta de bază cu decoratorul care măsoară timpul
+        StudentExporter timeMeasuringExporter = new TimeMeasuringExporter(baseExporter);
+
+        // 3. Apelăm funcția de export prin intermediul decoratorului
+        timeMeasuringExporter.export(numeFisierExcel, listaStudentiNou);
 
         System.out.println("\n--- Sectiune 8.5.4 b) Import Colectie Studenti din Excel ---");
         // Citim inapoi in alta colectie si afisam sa validam
